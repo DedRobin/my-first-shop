@@ -11,8 +11,7 @@ class RamSpider(scrapy.Spider):
 
     def parse(self, response, **kwargs):
         for product in response.css(".items.list-view .item"):
-            # external_id = product.attrib.get("data-ga-product-id")
-            external_id = product.css(".raiting-and-number-container .number::text").get()
+            external_id = product.css(".raiting-and-number-container .number::text").get()[7:]
 
             try:
                 cost = product.css(".price-container .price::text").get().strip()
@@ -35,6 +34,6 @@ class RamSpider(scrapy.Spider):
             }
             yield data
 
-        next_page = response.css(".pages ul:last-child a::attr(href)").get()
+        next_page = response.css(".pages ul li:last-child a::attr(href)").get()
         if next_page is not None:
             yield response.follow(next_page, callback=self.parse)

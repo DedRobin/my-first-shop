@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="card mb-5 product-card">
+<div class="card m-3 col-2">
     <form method="post" class="d-flex text-end justify-content-between py-2" action="{{ product.id }}/favorite/">
         {% csrf_token %}
         {% if product.favorite.exists %}
@@ -19,7 +19,7 @@
     {% endif %}
     <div class="card-body">
         <h5 class="card-title text-center bg-warning rounded-4 p-3">{{ product.title|title }}</h5>
-        <h5 class="card-title text-center bg-secondary rounded-4 p-3">Color: {{ product.color }}</h5>
+        <div class="card-text bg-info rounded-4 py-3 my-3">{{ product.external_id }}</div>
         <div class="card-text bg-info rounded-4 py-3 my-3">Cost: {{ product.cost }} BYN</div>
         <div class="d-flex justify-content-between">
             <button type="button" class="d-block btn btn-danger">Buy</button>
