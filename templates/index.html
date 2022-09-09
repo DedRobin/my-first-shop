@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+
+    {% include 'header.html' %}
+
+    <div class="container-fluid row justify-content-between pt-5">
+
+
+        <div class="col text-center">
+
+            <div class="container row justify-content-between">
+                {% for product in product_list %}
+                    {% include "product.html" %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+    </div>
+
+{% endblock %}
