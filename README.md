@@ -1,2 +1,2 @@
-# My-first-shop
+# my-first-shop
 Shop application (Django)
