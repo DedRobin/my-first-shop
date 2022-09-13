@@ -6,16 +6,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Products</a>
-                </li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'index' %}">Products</a></li>
 
+                {% if email == "Not login" %}
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="{% url 'register' %}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+
+            {% if email != "Not login"  %}
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
             </ul>
         </div>
-        {% if username %}
-        <div>{{ username }}</div>
-        {% else %}
-        <div>Not login</div>
-        {% endif %}
+        <div>{{ email }}</div>
     </div>
 </nav>

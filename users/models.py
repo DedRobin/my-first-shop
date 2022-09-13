@@ -8,11 +8,11 @@ from django.contrib.auth.models import BaseUserManager
 
 class UserManager(BaseUserManager):
     def create_user(
-        self,
-        email,
-        password: str = None,
-        is_staff: bool = False,
-        is_superuser: bool = False,
+            self,
+            email,
+            password: str = None,
+            is_staff: bool = False,
+            is_superuser: bool = False,
     ) -> User | None:
         if email is None:
             raise ValueError("Users must have an email address")

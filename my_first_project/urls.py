@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import path
 
 from products.views import products
+from users.views import register_user, login_view, logout_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", products, name="index"),
+    path("register/", register_user, name="register"),
+    path("login/", login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
 ]
 
 if settings.DEBUG:
