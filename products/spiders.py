@@ -11,7 +11,8 @@ class RamSpider(scrapy.Spider):
 
     def parse(self, response, **kwargs):
         for product in response.css(".items.list-view .item"):
-            external_id = product.css(".raiting-and-number-container .number::text").get()[7:]
+            external_id = product.css(".raiting-and-number-container .number::text").get()[
+                          7:]  # slice a string -> "Номер: "
 
             try:
                 cost = product.css(".price-container .price::text").get().strip()

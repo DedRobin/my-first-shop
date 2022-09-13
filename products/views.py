@@ -4,5 +4,5 @@ from products.models import Product
 
 
 def products(request):
-    product_list = Product.objects.order_by("id")
+    product_list = Product.objects.order_by("id").all()[:24]
     return render(request, "index.html", {"product_list": product_list})
