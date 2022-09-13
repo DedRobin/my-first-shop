@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from products.views import products
+from products.views import products, as_favorite
 from users.views import register_user, login_view, logout_view
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path("register/", register_user, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
+    path("<int:product_id>/as_favorite/", as_favorite, name="as_favorite"),
 ]
 
 if settings.DEBUG:

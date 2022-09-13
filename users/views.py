@@ -21,7 +21,7 @@ def register_user(request):
                 return redirect("/")
     else:
         form = RegisterForm()
-    return render(request, "register.html", {"form": form})
+    return render(request, "register.html", {"form": form, "email": "Not login"})
 
 
 def login_view(request):
@@ -38,7 +38,7 @@ def login_view(request):
             return redirect("index")
     else:
         form = LoginForm()
-    return render(request, "login_view.html", {"form": form})
+    return render(request, "login_view.html", {"form": form, "email": "Not login"})
 
 
 def logout_view(request):
