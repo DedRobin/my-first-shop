@@ -18,10 +18,10 @@ class Product(models.Model):
 
 class FavoriteProduct(models.Model):
     user = models.ForeignKey(
-        User, related_name="favorite", on_delete=models.CASCADE
+        User, related_name="favorites", on_delete=models.CASCADE
     )
     product = models.ForeignKey(
-        Product, related_name="favorite", on_delete=models.CASCADE
+        Product, related_name="favorites", on_delete=models.CASCADE
     )
 
     def __str__(self):

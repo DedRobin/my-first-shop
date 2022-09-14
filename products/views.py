@@ -22,10 +22,9 @@ def products(request):
 
     if request.user.is_authenticated:
         user = request.user
-        favorite_count = Product.objects.filter(favorite__user=request.user).count()
+        favorite_count = Product.objects.filter(favorites__user=request.user).count()
         return render(request, "index.html", {"product_list": product_list,
                                               "user_list": user_list,
-                                              "user": user,
                                               "form": form,
                                               "favorite_count": favorite_count})
     else:
@@ -36,12 +35,10 @@ def products(request):
 
 def favorites(request):
     if request.user.is_authenticated:
-        user = request.user
         form = PurchaseForm()
-        favorite_list = Product.objects.filter(favorite__user=request.user)
+        favorite_list = Product.objects.filter(favorites__user=request.user)
         return render(request, "index.html", {"product_list": favorite_list,
                                               "favorite_count": favorite_list.count(),
-                                              "user": user,
                                               "form": form})
     else:
         return redirect("index")
@@ -49,14 +46,13 @@ def favorites(request):
 
 def as_favorite(request, product_id):
     if request.user.is_authenticated:
-        user = User.objects.get(email=request.user.email)
 
-        record_exists = FavoriteProduct.objects.filter(user=user, product_id=product_id).exists()
+        record_exists = FavoriteProduct.objects.filter(user=request.user, product_id=product_id).exists()
 
         if record_exists:
-            FavoriteProduct.objects.filter(user=user, product_id=product_id).delete()
+            FavoriteProduct.objects.filter(user=request.user, product_id=product_id).delete()
         else:
-            FavoriteProduct.objects.create(user=user, product_id=product_id)
+            FavoriteProduct.objects.create(user=request.user, product_id=product_id)
 
     return redirect("index")
 
@@ -80,9 +76,8 @@ def buy_product(request, product_id):
 def purchases(request):
     if request.user.is_authenticated:
         purchase_list = Purchase.objects.filter(user=request.user)
-        favorite_count = Product.objects.filter(favorite__user=request.user).count()
+        favorite_count = Product.objects.filter(favorites__user=request.user).count()
         return render(request, "purchases.html", {"purchase_list": purchase_list,
-                                                  "user": request.user,
                                                   "favorite_count": favorite_count})
     else:
         return redirect("index")

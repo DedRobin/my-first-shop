@@ -26,8 +26,8 @@
                 {% endif %}
             </ul>
         </div>
-    {% if user %}
-        <div>{{ user.email }}</div>
+    {% if request.user.email %}
+        <div>{{ request.user.email}}</div>
     {% else %}
         <div>Not login</div>
     {% endif %}
