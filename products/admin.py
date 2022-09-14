@@ -18,5 +18,6 @@ class FavoriteProductsAdmin(admin.ModelAdmin):
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ("user", "product", "count")
+    list_display = ("user", "product", "count", "created_at")
+    readonly_fields = ("created_at",)
     search_fields = ("user", "product", "count")

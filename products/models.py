@@ -36,3 +36,4 @@ class Purchase(models.Model):
         Product, related_name="purchases", on_delete=models.CASCADE
     )
     count = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, blank=True, null=True)

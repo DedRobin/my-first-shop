@@ -35,10 +35,9 @@ def products(request):
 
 
 def favorites(request):
-    form = PurchaseForm()
-
     if request.user.is_authenticated:
         user = request.user
+        form = PurchaseForm()
         favorite_list = Product.objects.filter(favorite__user=request.user)
         return render(request, "index.html", {"product_list": favorite_list,
                                               "favorite_count": favorite_list.count(),
@@ -86,4 +85,4 @@ def purchases(request):
                                                   "user": request.user,
                                                   "favorite_count": favorite_count})
     else:
-        redirect("index")
+        return redirect("index")

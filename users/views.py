@@ -8,7 +8,7 @@ from users.models import User
 
 def register_user(request):
     if request.user.is_authenticated:
-        return redirect("/")
+        return redirect("index")
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -18,15 +18,15 @@ def register_user(request):
                 user = User(email=form.cleaned_data["email"])
                 user.set_password(form.cleaned_data["password"])
                 user.save()
-                return redirect("/")
+                return redirect("login")
     else:
         form = RegisterForm()
-    return render(request, "register.html", {"form": form, "email": "Not login"})
+        return render(request, "register.html", {"form": form})
 
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("/")
+        return redirect("index")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -38,7 +38,7 @@ def login_view(request):
             return redirect("index")
     else:
         form = LoginForm()
-    return render(request, "login_view.html", {"form": form})
+        return render(request, "login_view.html", {"form": form})
 
 
 def logout_view(request):
