@@ -38,7 +38,7 @@ def login_view(request):
             return redirect("index")
     else:
         form = LoginForm()
-    return render(request, "login_view.html", {"form": form, "email": "Not login"})
+    return render(request, "login_view.html", {"form": form})
 
 
 def logout_view(request):

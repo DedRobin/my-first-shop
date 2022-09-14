@@ -6,12 +6,18 @@
 
     {% include 'header.html' %}
     <h1 class="text-center">Product list</h1>
-    <div class="container-fluid row text-center justify-content-between pt-5">
+    <div class="container-fluid row justify-content-between pt-5">
 
-        {% for product in product_list %}
-            {% include "product.html" %}
-        {% endfor %}
+        {% include "filters.html" %}
 
+        <div class="col">
+            <div class="container-fluid row text-center justify-content-between">
+
+                {% for product in product_list %}
+                    {% include "product.html" %}
+                {% endfor %}
+
+            </div>
+        </div>
     </div>
-
 {% endblock %}

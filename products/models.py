@@ -26,3 +26,13 @@ class FavoriteProduct(models.Model):
 
     def __str__(self):
         return f"{self.user}, {self.product.title}"
+
+
+class Purchase(models.Model):
+    user = models.ForeignKey(
+        User, related_name="purchases", on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(
+        Product, related_name="purchases", on_delete=models.CASCADE
+    )
+    count = models.IntegerField()

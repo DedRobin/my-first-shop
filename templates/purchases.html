@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}My first shop{% endblock %}
+
+{% block content %}
+
+    {% include 'header.html' %}
+    <h1 class="text-center">Purchases</h1>
+    <div class="container-fluid row text-center justify-content-between pt-5">
+
+        {% for purchase in purchase_list %}
+            {% include "purchase.html" %}
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
