@@ -7,5 +7,5 @@
         <img src="{% static 'no-image.jpg' %}" class="img-fluid img-thumbnail" alt="{{ purchase.product }}">
     {% endif %}
     <div class="card-title text-center bg-warning rounded-4 p-3 mt-3">{{ purchase.product }}</div>
-    <div class="card-text bg-info rounded-4 py-3 my-3">{{ purchase.count }} BYN</div>
+    <div class="card-text bg-info rounded-4 py-3 my-3">Quantity: {{ purchase.count }}</div>
 </div>
