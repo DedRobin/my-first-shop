@@ -6,6 +6,8 @@ from products.services import get_sorted_product
 from users.models import User
 
 
+# PAGES
+
 def index(request):
     return redirect("products")
 
@@ -15,16 +17,19 @@ def products(request):
     product_list = Product.objects.order_by("id")
 
     order_by = request.GET.get("order_by")
-    product_list = get_sorted_product(queryset=product_list, order_by=order_by)
+    product_list = get_sorted_product(queryset=product_list, order_by=order_by, request=request)
     product_list = product_list.all()[:24]
 
     user_list = User.objects.all()  # По Purchase отловить User
-
+    purchase_list = Purchase.objects.all()
     if request.user.is_authenticated:
-        favorite_count = Product.objects.filter(favorites__user=request.user).count()
+        favorite_product_list = Product.objects.filter(favorites__user=request.user)
+        favorite_count = favorite_product_list.count()
+
         return render(request, "index.html", {"product_list": product_list,
                                               "user_list": user_list,
                                               "form": form,
+                                              "favorite_product_list": favorite_product_list,
                                               "favorite_count": favorite_count})
     else:
         return render(request, "index.html", {"product_list": product_list,
@@ -32,20 +37,20 @@ def products(request):
                                               "form": form})
 
 
-def favorites(request):
+def purchases(request):
     if request.user.is_authenticated:
-        form = PurchaseForm()
-        favorite_list = Product.objects.filter(favorites__user=request.user)
-        return render(request, "index.html", {"product_list": favorite_list,
-                                              "favorite_count": favorite_list.count(),
-                                              "form": form})
+        purchase_list = Purchase.objects.filter(user=request.user)
+        favorite_count = Product.objects.filter(favorites__user=request.user).count()
+        return render(request, "purchases.html", {"purchase_list": purchase_list,
+                                                  "favorite_count": favorite_count})
     else:
         return redirect("index")
 
 
+# ACTIONS
+
 def as_favorite(request, product_id):
     if request.user.is_authenticated:
-
         record_exists = FavoriteProduct.objects.filter(user=request.user, product_id=product_id).exists()
 
         if record_exists:
@@ -70,13 +75,3 @@ def buy_product(request, product_id):
                 count=form.cleaned_data["count"])
             purchase.save()
     return redirect("index")
-
-
-def purchases(request):
-    if request.user.is_authenticated:
-        purchase_list = Purchase.objects.filter(user=request.user)
-        favorite_count = Product.objects.filter(favorites__user=request.user).count()
-        return render(request, "purchases.html", {"purchase_list": purchase_list,
-                                                  "favorite_count": favorite_count})
-    else:
-        return redirect("index")

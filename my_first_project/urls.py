@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from products.views import index, products, as_favorite, buy_product, favorites, purchases
+from products.views import index, products, as_favorite, buy_product, purchases
 from users.views import register_user, login_view, logout_view
 
 urlpatterns = [
@@ -35,9 +35,6 @@ urlpatterns = [
     path("products/", products, name="products"),
     path("products/<int:product_id>/as_favorite/", as_favorite, name="as_favorite"),
     path("products/<int:product_id>/buy/", buy_product, name="buy_product"),
-
-    # Favorites
-    path("products/favorites", favorites, name="favorites"),
 
     # Purchases
     path("products/purchases", purchases, name="purchases"),

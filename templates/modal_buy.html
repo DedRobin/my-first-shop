@@ -1,0 +1,33 @@
+{% load crispy_forms_filters %}
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+        data-bs-target="#buy{{ product.id }}">
+    Buy
+</button>
+</div>
+
+<div class="modal fade" id="buy{{ product.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Enter quantity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{{ product.id }}/buy/">
+
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Buy</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>

@@ -1,10 +1,11 @@
 import requests
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Sum, F, QuerySet
 from shutil import copyfileobj
 
 
-def get_sorted_product(queryset: QuerySet, order_by: str) -> QuerySet:
+def get_sorted_product(queryset: QuerySet, order_by: str, request: WSGIRequest) -> QuerySet:
     if order_by == "cost":
         return queryset.order_by("cost")
     elif order_by == "-cost":
@@ -15,6 +16,8 @@ def get_sorted_product(queryset: QuerySet, order_by: str) -> QuerySet:
     elif order_by == "popular":
         queryset = queryset.annotate(popular=Sum("purchases__count"))
         return queryset.order_by("popular")
+    elif order_by == "favorite":
+        return queryset.filter(favorites__user=request.user)
     return queryset
 
 
