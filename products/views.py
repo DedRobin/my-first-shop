@@ -18,10 +18,9 @@ def products(request):
     product_list = get_sorted_product(queryset=product_list, order_by=order_by)
     product_list = product_list.all()[:24]
 
-    user_list = User.objects.all()
+    user_list = User.objects.all()  # По Purchase отловить User
 
     if request.user.is_authenticated:
-        user = request.user
         favorite_count = Product.objects.filter(favorites__user=request.user).count()
         return render(request, "index.html", {"product_list": product_list,
                                               "user_list": user_list,
