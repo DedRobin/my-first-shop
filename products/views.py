@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import render, redirect
 
 from products.forms import PurchaseForm
@@ -20,20 +21,18 @@ def products(request):
     product_list = get_sorted_product(queryset=product_list, order_by=order_by, request=request)
     product_list = product_list.all()[:24]
 
-    user_list = User.objects.all()  # По Purchase отловить User
-    purchase_list = Purchase.objects.all()
     if request.user.is_authenticated:
+        purchase_list = Purchase.objects.all()
         favorite_product_list = Product.objects.filter(favorites__user=request.user)
         favorite_count = favorite_product_list.count()
 
         return render(request, "index.html", {"product_list": product_list,
-                                              "user_list": user_list,
                                               "form": form,
                                               "favorite_product_list": favorite_product_list,
-                                              "favorite_count": favorite_count})
+                                              "favorite_count": favorite_count,
+                                              "purchase_list": purchase_list})
     else:
         return render(request, "index.html", {"product_list": product_list,
-                                              "user_list": user_list,
                                               "form": form})
 
 
@@ -49,8 +48,9 @@ def purchases(request):
 
 # ACTIONS
 
-def as_favorite(request, product_id):
+def as_favorite(request):
     if request.user.is_authenticated:
+        product_id = request.POST.get("product_id")
         record_exists = FavoriteProduct.objects.filter(user=request.user, product_id=product_id).exists()
 
         if record_exists:

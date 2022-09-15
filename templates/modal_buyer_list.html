@@ -1,23 +1,26 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#users">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#users{{ product.id }}">
     Buyer list
 </button>
 
-<div class="modal fade" id="users" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="users{{ product.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">User list</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Buyers</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                {% for user in user_list %}
-                    {% if user.purchases.product_id == product.id %}
-                        {{ user.email }}
-                    {% endif %}
-                {% endfor %}
+            <div class="modal-body text-start">
+                <ul>
+                    {% for purchase in purchase_list %}
+                        {% if product == purchase.product %}
+                            <li>{{ purchase.user }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>

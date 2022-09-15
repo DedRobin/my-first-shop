@@ -33,7 +33,7 @@ urlpatterns = [
 
     # Products
     path("products/", products, name="products"),
-    path("products/<int:product_id>/as_favorite/", as_favorite, name="as_favorite"),
+    path("products/as_favorite/", as_favorite, name="as_favorite"),
     path("products/<int:product_id>/buy/", buy_product, name="buy_product"),
 
     # Purchases
