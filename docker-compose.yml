@@ -4,10 +4,11 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      - POSTGRES_DB=django
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
-
+      - POSTGRES_DB=shop
+      - POSTGRES_USER=shop
+      - POSTGRES_PASSWORD=shop
+  redis:
+    image: redis:latest
   django:
     build: .
     ports:
@@ -18,5 +19,6 @@ services:
       - postgres
     environment:
       - DATABASE_HOST=postgres
+      - REDIS_HOST=redis
     command: |
       python manage.py runserver 0.0.0.0:8000

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.core.cache import cache
 
 from products.forms import PurchaseForm
 from products.models import Product, FavoriteProduct, Purchase
@@ -14,31 +15,40 @@ def index(request):
 
 def products(request):
     form = PurchaseForm()  # create form for "Buy"(red) button
-    product_list = Product.objects.order_by("id")
 
+    product_list = Product.objects.all()
+
+    page_number = request.GET.get("page")
     order_by = request.GET.get("order_by")  # get value from filter
+    cache_key = f"products-view.{order_by}.{page_number}"
 
     product_list = get_sorted_product(queryset=product_list,
                                       order_by=order_by,
                                       request=request)
-    test = request
     paginator = Paginator(product_list, 15)
-    page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
+
+    # result = cache.get(cache_key)
+    # if result is not None:
+    #     return result
 
     if request.user.is_authenticated:
         purchase_list = Purchase.objects.all()
         favorite_product_list = Product.objects.filter(favorites__user=request.user)
         favorite_count = favorite_product_list.count()
+        response = render(request, "index.html", {"product_list": page,
+                                                  "form": form,
+                                                  "favorite_product_list": favorite_product_list,
+                                                  "favorite_count": favorite_count,
+                                                  "purchase_list": purchase_list})
+        cache.set("products-view", response, 60 * 60)
 
-        return render(request, "index.html", {"product_list": page,
-                                              "form": form,
-                                              "favorite_product_list": favorite_product_list,
-                                              "favorite_count": favorite_count,
-                                              "purchase_list": purchase_list})
+        return response
     else:
-        return render(request, "index.html", {"product_list": page,
-                                              "form": form})
+        response = render(request, "index.html", {"product_list": page,
+                                                  "form": form})
+        cache.set(cache_key, response, 60 * 60)
+        return response
 
 
 def purchases(request):
