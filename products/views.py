@@ -1,10 +1,9 @@
-from django.db.models import Count
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
 from products.forms import PurchaseForm
 from products.models import Product, FavoriteProduct, Purchase
 from products.services import get_sorted_product
-from users.models import User
 
 
 # PAGES
@@ -14,25 +13,31 @@ def index(request):
 
 
 def products(request):
-    form = PurchaseForm()
+    form = PurchaseForm()  # create form for "Buy"(red) button
     product_list = Product.objects.order_by("id")
 
-    order_by = request.GET.get("order_by")
-    product_list = get_sorted_product(queryset=product_list, order_by=order_by, request=request)
-    product_list = product_list.all()[:24]
+    order_by = request.GET.get("order_by")  # get value from filter
+
+    product_list = get_sorted_product(queryset=product_list,
+                                      order_by=order_by,
+                                      request=request)
+    test = request
+    paginator = Paginator(product_list, 15)
+    page_number = request.GET.get("page")
+    page = paginator.get_page(page_number)
 
     if request.user.is_authenticated:
         purchase_list = Purchase.objects.all()
         favorite_product_list = Product.objects.filter(favorites__user=request.user)
         favorite_count = favorite_product_list.count()
 
-        return render(request, "index.html", {"product_list": product_list,
+        return render(request, "index.html", {"product_list": page,
                                               "form": form,
                                               "favorite_product_list": favorite_product_list,
                                               "favorite_count": favorite_count,
                                               "purchase_list": purchase_list})
     else:
-        return render(request, "index.html", {"product_list": product_list,
+        return render(request, "index.html", {"product_list": page,
                                               "form": form})
 
 

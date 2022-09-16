@@ -13,11 +13,16 @@
         <div class="col">
             <div class="container-fluid row text-center justify-content-between">
 
+                {% include "pagination.html" %}
+
                 {% for product in product_list %}
                     {% include "product.html" %}
                 {% endfor %}
 
+                {% include "pagination.html" %}
+
             </div>
+
         </div>
     </div>
 {% endblock %}
