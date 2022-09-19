@@ -19,8 +19,6 @@ def products(request):
     product_list = Product.objects.order_by("id")
 
     page_number = request.GET.get("page")
-    # if not page_number:
-    #     page_number = 1
 
     order_by = request.GET.get("order_by")  # get value from filter
     cache_key = f"products-view.{request.user}.{order_by}.{page_number}"
@@ -45,7 +43,7 @@ def products(request):
                                                   "favorite_product_list": favorite_product_list,
                                                   "favorite_count": favorite_count,
                                                   "purchase_list": purchase_list})
-        cache.set("products-view", response, 60 * 60)
+        cache.set(cache_key, response, 60 * 60)
 
         return response
     else:
