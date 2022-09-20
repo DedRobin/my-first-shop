@@ -6,20 +6,25 @@ from shutil import copyfileobj
 
 
 def get_sorted_product(queryset: QuerySet, order_by: list, request: WSGIRequest) -> QuerySet:
-    for f in order_by:
-        pass
-    if order_by == "cost":
-        return queryset.order_by("cost")
-    elif order_by == "-cost":
-        return queryset.order_by("-cost")
-    elif order_by == "sold":
-        queryset = queryset.annotate(sold=Sum(F("cost") * F("purchases__count")))
-        return queryset.order_by("sold")
-    elif order_by == "popular":
-        queryset = queryset.annotate(popular=Sum("purchases__count"))
-        return queryset.order_by("popular")
-    elif order_by == "favorite":
+    if order_by == "favorite":
         return queryset.filter(favorites__user=request.user)
+    if "cost" in order_by:
+        queryset = queryset.order_by("cost")
+    elif "-cost" in order_by:
+        queryset = queryset.order_by("-cost")
+    if "sold" in order_by:
+        queryset = queryset.annotate(sold=Sum(F("cost") * F("purchases__count")))
+        queryset = queryset.order_by("sold")
+    elif "-sold" in order_by:
+        queryset = queryset.annotate(sold=Sum(F("cost") * F("purchases__count")))
+        queryset = queryset.order_by("-sold")
+    if "popular" in order_by:
+        queryset = queryset.annotate(popular=Sum("purchases__count"))
+        queryset = queryset.order_by("popular")
+    elif "-popular" in order_by:
+        queryset = queryset.annotate(popular=Sum("purchases__count"))
+        queryset = queryset.order_by("-popular")
+
     return queryset
 
 
