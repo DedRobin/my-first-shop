@@ -12,13 +12,11 @@ def register_user(request):
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
-        if request.method == "POST":
-            form = RegisterForm(request.POST)
-            if form.is_valid():
-                user = User(email=form.cleaned_data["email"])
-                user.set_password(form.cleaned_data["password"])
-                user.save()
-                return redirect("login")
+        if form.is_valid():
+            user = User(email=form.cleaned_data["email"])
+            user.set_password(form.cleaned_data["password"])
+            user.save()
+            return redirect("login")
     else:
         form = RegisterForm()
         return render(request, "register.html", {"form": form})

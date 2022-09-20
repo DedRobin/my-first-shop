@@ -1,49 +1,8 @@
+{% load crispy_forms_filters %}
+
 <form class="col-2" method="get" action="#">
-    <div>Filter</div>
-    {#            by favorite#}
-    {% if request.user.is_authenticated %}
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="order_by" id="Favorite"
-                   value="favorite">
-            <label class="form-check-label" for="Favorite">favorite</label>
-        </div>
-        <hr>
-    {% endif %}
-    {#            by cost#}
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio1"
-               value="cost">
-        <label class="form-check-label" for="inlineRadio1">cost</label>
-    </div>
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio2"
-               value="-cost">
-        <label class="form-check-label" for="inlineRadio2">-cost</label>
-    </div>
-    <hr>
-    {#            by sold#}
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio1"
-               value="sold">
-        <label class="form-check-label" for="inlineRadio1">sold</label>
-    </div>
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio2"
-               value="-sold">
-        <label class="form-check-label" for="inlineRadio2">-sold</label>
-    </div>
-    <hr>
-    {#            by popular#}
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio1"
-               value="popular">
-        <label class="form-check-label" for="inlineRadio1">popular</label>
-    </div>
-    <div class="form-check form-check">
-        <input class="form-check-input" type="radio" name="order_by" id="inlineRadio2"
-               value="-popular">
-        <label class="form-check-label" for="inlineRadio2">-popular</label>
-    </div>
+    <div class="pb-3">Filter</div>
+    {{ filter_form|crispy }}
     <button type="submit" class="btn btn-primary">Apply</button>
     <a class="btn btn-danger" href="{% url 'products' %}">Reset</a>
 </form>

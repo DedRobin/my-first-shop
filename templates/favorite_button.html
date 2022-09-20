@@ -1,6 +1,7 @@
-<form method="POST" class="d-md-flex justify-content-md-end m-2" action="as_favorite/">
+<form method="post" class="d-md-flex justify-content-md-end m-2" action="as_favorite/">
     {% csrf_token %}
     <input type="hidden" name="product_id" value="{{ product.id }}">
+    <input type="hidden" name="href" value="#">
     {% if product in favorite_product_list %}
         <button type="submit" class="btn justify">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

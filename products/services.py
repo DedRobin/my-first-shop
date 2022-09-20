@@ -5,7 +5,9 @@ from django.db.models import Sum, F, QuerySet
 from shutil import copyfileobj
 
 
-def get_sorted_product(queryset: QuerySet, order_by: str, request: WSGIRequest) -> QuerySet:
+def get_sorted_product(queryset: QuerySet, order_by: list, request: WSGIRequest) -> QuerySet:
+    for f in order_by:
+        pass
     if order_by == "cost":
         return queryset.order_by("cost")
     elif order_by == "-cost":
