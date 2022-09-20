@@ -14,14 +14,15 @@ def index(request):
 
 
 def products(request):
-    form = PurchaseForm()  # create form for "Buy"(red) button
+    form = PurchaseForm()  # Empty form for "Buy"(red) button
+
+    favorite_product_id = []  # favorite product id list BY DEFAULT (for cache key)
 
     product_list = Product.objects.order_by("id")
 
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page", 1)
 
     order_by = request.GET.get("order_by")  # get value from filter
-    cache_key = f"products-view.{request.user}.{order_by}.{page_number}"
 
     product_list = get_sorted_product(queryset=product_list,
                                       order_by=order_by,
@@ -30,27 +31,31 @@ def products(request):
     paginator = Paginator(product_list, 15)
     page = paginator.get_page(page_number)
 
-    result = cache.get(cache_key)
-    if result is not None:
-        return result
-
     if request.user.is_authenticated:
         purchase_list = Purchase.objects.all()
         favorite_product_list = Product.objects.filter(favorites__user=request.user)
-        favorite_count = favorite_product_list.count()
         response = render(request, "index.html", {"page": page,
                                                   "form": form,
                                                   "favorite_product_list": favorite_product_list,
-                                                  "favorite_count": favorite_count,
                                                   "purchase_list": purchase_list})
-        cache.set(cache_key, response, 60 * 60)
 
-        return response
+        favorite_product_id = [x.id for x in favorite_product_list]  # get all id from each ProductQuerySet
+
+
     else:
+
         response = render(request, "index.html", {"product_list": page,
                                                   "form": form})
-        cache.set(cache_key, response, 60 * 60)
-        return response
+
+    cache_key = f"products-view.{request.user}.{order_by}.{page_number}.favorite_product_id={favorite_product_id}"
+
+    result = cache.get(cache_key)  # get cache
+
+    if result is not None:
+        return result
+
+    cache.set(cache_key, response, 60 * 60)
+    return response
 
 
 def purchases(request):
