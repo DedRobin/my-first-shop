@@ -6,7 +6,7 @@ from shutil import copyfileobj
 
 
 def get_sorted_product(queryset: QuerySet, order_by: dict, request: WSGIRequest) -> QuerySet:
-    if order_by.get("order_by") == "favorite":
+    if order_by.get("order_by") == "favorite" and request.user.is_authenticated:
         queryset = queryset.filter(favorites__user=request.user)
     elif order_by.get("order_by") == "cost":
         queryset = queryset.order_by("cost")

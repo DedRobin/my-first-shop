@@ -51,13 +51,14 @@ def products(request):
                                                   })
 
     # CACHE
-    cache_key = f"products-view.filter={request.user}.{order_by}." \
-                f"page={page_number}." \
-                f"favorite_product_id={favorite_product_id}"
-    result = cache.get(cache_key)  # get cache
-    if result is not None:
-        return result
-    cache.set(cache_key, response, 60 * 60)
+    # cache_key = f"products-view.filter={request.user}." \
+    #             f"order_by={order_by}." \
+    #             f"page={page_number}." \
+    #             f"favorite_product_id={favorite_product_id}"
+    # result = cache.get(cache_key)  # get cache
+    # if result is not None:
+    #     return result
+    # cache.set(cache_key, response, 60 * 60)
 
     return response
 
