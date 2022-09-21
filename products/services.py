@@ -5,25 +5,33 @@ from django.db.models import Sum, F, QuerySet
 from shutil import copyfileobj
 
 
-def get_sorted_product(queryset: QuerySet, order_by: list, request: WSGIRequest) -> QuerySet:
-    if order_by == "favorite":
-        return queryset.filter(favorites__user=request.user)
-    if "cost" in order_by:
+def get_sorted_product(queryset: QuerySet, order_by: dict, request: WSGIRequest) -> QuerySet:
+    if order_by.get("order_by") == "favorite":
+        queryset = queryset.filter(favorites__user=request.user)
+    elif order_by.get("order_by") == "cost":
         queryset = queryset.order_by("cost")
-    elif "-cost" in order_by:
+    elif order_by.get("order_by") == "-cost":
         queryset = queryset.order_by("-cost")
-    if "sold" in order_by:
+    elif order_by.get("order_by") == "sold":
         queryset = queryset.annotate(sold=Sum(F("cost") * F("purchases__count")))
-        queryset = queryset.order_by("sold")
-    elif "-sold" in order_by:
+        queryset = queryset.filter(sold__gt=0).order_by("sold")
+    elif order_by.get("order_by") == "-sold":
         queryset = queryset.annotate(sold=Sum(F("cost") * F("purchases__count")))
-        queryset = queryset.order_by("-sold")
-    if "popular" in order_by:
+        queryset = queryset.filter(sold__gt=0).order_by("-sold")
+    elif order_by.get("order_by") == "popular":
         queryset = queryset.annotate(popular=Sum("purchases__count"))
-        queryset = queryset.order_by("popular")
-    elif "-popular" in order_by:
+        queryset = queryset.filter(popular__gt=0).order_by("popular")
+    elif order_by.get("order_by") == "-popular":
         queryset = queryset.annotate(popular=Sum("purchases__count"))
-        queryset = queryset.order_by("-popular")
+        queryset = queryset.filter(popular__gt=0).order_by("-popular")
+
+    price_from = order_by.get("price_from")
+    if price_from:
+        queryset = queryset.filter(cost__gte=price_from)
+
+    price_to = order_by.get("price_to")
+    if price_to:
+        queryset = queryset.filter(cost__lte=price_to)
 
     return queryset
 

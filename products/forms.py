@@ -1,19 +1,12 @@
 from django import forms
 
-ORDER_PRICE_CHOICES = (
+ORDER_CHOICES = (
     ("", "Empty"),
-    ("price", "Price Asc"),
-    ("-price", "Price Desc"),
-)
-
-ORDER_SOLD_CHOICES = (
-    ("", "Empty"),
+    ("favorite", "Favorite"),
+    ("cost", "Price Asc"),
+    ("-cost", "Price Desc"),
     ("sold", "Sold Asc"),
     ("-sold", "Sold Desc"),
-)
-
-ORDER_POPULAR_CHOICES = (
-    ("", "Empty"),
     ("popular", "Popular Asc"),
     ("-popular", "Popular Desc"),
 )
@@ -24,8 +17,6 @@ class PurchaseForm(forms.Form):
 
 
 class ProductsFilterForm(forms.Form):
-    price = forms.ChoiceField(choices=ORDER_PRICE_CHOICES, required=False, label="By price")
-    sold = forms.ChoiceField(choices=ORDER_SOLD_CHOICES, required=False, label="By sold")
-    popular = forms.ChoiceField(choices=ORDER_POPULAR_CHOICES, required=False, label="By popular")
+    order_by = forms.ChoiceField(choices=ORDER_CHOICES, required=False, label="Order by")
     price_from = forms.IntegerField(required=False)
     price_to = forms.IntegerField(required=False)
