@@ -1,0 +1,8 @@
+body {
+    background-color: #e3f2fd;
+}
+
+.header_setting {
+    background: rgb(0, 207, 249);
+    background: linear-gradient(180deg, rgba(0, 207, 249, 1) 0%, rgba(227, 242, 253, 1) 100%);
+}
