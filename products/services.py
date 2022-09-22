@@ -1,8 +1,13 @@
-import requests
-
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Sum, F, QuerySet
-from shutil import copyfileobj
+from django_rq import job
+from scrapy import signals
+from scrapy.crawler import CrawlerProcess
+from scrapy.signalmanager import dispatcher
+from scrapy.utils.project import get_project_settings
+
+from products.models import Product
+from products.spiders import RamSpider
 
 
 def get_sorted_product(queryset: QuerySet, order_by: dict, request: WSGIRequest) -> QuerySet:
@@ -36,13 +41,16 @@ def get_sorted_product(queryset: QuerySet, order_by: dict, request: WSGIRequest)
     return queryset
 
 
-def download_image_and_get_filename(url: str) -> str:
-    response = requests.get(url, stream=True)
-    filename = url.split("/")[-1]
+@job
+def run_ram_spider(clear):
+    if clear:
+        Product.objects.all().delete()
 
-    if response.status_code == 200:
-        response.raw.decode_content = True
-        with open(f'media/products/{filename}', 'wb') as f:
-            copyfileobj(response.raw, f)
+    def crawler_results(signal, sender, item, response, spider):
+        Product.objects.update_or_create(external_id=item["external_id"], defaults=item)
 
-    return filename
+    dispatcher.connect(crawler_results, signal=signals.item_scraped)
+
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(RamSpider)
+    process.start()

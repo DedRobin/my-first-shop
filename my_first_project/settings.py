@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_rq",
     "crispy_forms",
     "crispy_bootstrap5",
     "my_first_project",
@@ -148,8 +149,19 @@ MEDIA_URL = "media/"
 
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 CACHES = {
-   "default": {
-       "BACKEND": "django.core.cache.backends.redis.RedisCache",
-       "LOCATION": f"redis://{REDIS_HOST}:6379",
-   }
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:6379",
+    }
 }
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": REDIS_HOST,
+        "PORT": 6379,
+        "DB": 0,
+        "DEFAULT_TIMEOUT": 360,
+    },
+}
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from products.views import index, products, as_favorite, buy_product, purchases
 from users.views import register_user, login_view, logout_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("django-rq/", include("django_rq.urls")),
 
     # Index
     path("", index, name="index"),

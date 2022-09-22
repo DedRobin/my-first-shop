@@ -2,7 +2,7 @@ import scrapy
 
 from decimal import Decimal
 
-from products.services import download_image_and_get_filename
+from products.utils import download_image_and_get_filename
 
 
 class RamSpider(scrapy.Spider):
