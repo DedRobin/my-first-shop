@@ -7,12 +7,6 @@
         <div class="justify-content-start" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'index' %}">Products</a></li>
-
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" aria-current="page"
-                                            href="{% url 'purchases' %}">Purchases</a></li>
-                {% endif %}
-
             </ul>
         </div>
         <div class="justify-content-end" id="navbarSupportedContent">
