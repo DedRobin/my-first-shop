@@ -2,7 +2,7 @@ from django import forms
 
 ORDER_CHOICES = (
     ("", "Empty"),
-    ("favorite", "Favorite"),
+    ("favorites", "Favorites"),
     ("cost", "Price Asc"),
     ("-cost", "Price Desc"),
     ("sold", "Sold Asc"),
