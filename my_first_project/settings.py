@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "my_first_project",
     "products",
     "users",
+    "deliver_addresses",
+    "profiles",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
