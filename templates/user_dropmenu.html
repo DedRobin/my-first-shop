@@ -2,7 +2,7 @@
     {{ request.user.email }}
 </a>
 <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Edit profile</a></li>
+    <li><a class="dropdown-item" href="{% url 'profile' %}">Edit profile</a></li>
     <li><a class="dropdown-item" href="{% url 'purchases' %}">Purchase history</a></li>
     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
 </ul>

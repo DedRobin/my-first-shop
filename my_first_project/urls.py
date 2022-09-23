@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from products.views import index, products, as_favorite, buy_product, purchases
+from profiles.views import get_profile
 from users.views import register_user, login_view, logout_view
 
 urlpatterns = [
@@ -31,6 +32,9 @@ urlpatterns = [
     path("register/", register_user, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
+
+    # Profile
+    path("profile/", get_profile, name="profile"),
 
     # Products
     path("products/", products, name="products"),
